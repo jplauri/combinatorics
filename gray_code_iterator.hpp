@@ -56,7 +56,7 @@ private:
 
 	void increment()
 	{
-		int j = f_[0];
+		std::uint8_t j = f_[0];
 
 		if (j == n_)
 		{
