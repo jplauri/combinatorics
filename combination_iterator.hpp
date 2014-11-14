@@ -11,6 +11,12 @@
 #ifndef COMBINATION_ITERATOR_HPP
 #define COMBINATION_ITERATOR_HPP
 
+#include <vector>
+#include <numeric>
+#include <cassert>
+
+#include <boost/iterator/iterator_facade.hpp>
+
 template <typename T>
 class combination_iterator
 	: public boost::iterator_facade<
@@ -34,13 +40,7 @@ private:
 
 	void increment()
 	{
-		if (comb_.back() < n_ - 1)
-		{
-			++comb_.back();
-			return;
-		}
-
-		T j = size_ - 2;
+		T j = size_ - 1;
 
 		for (const T end = n_ - size_; j >= 0 && comb_[j] >= end + j; --j) { }
 
