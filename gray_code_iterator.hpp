@@ -27,7 +27,7 @@ class gray_code_iterator
 	>
 {
 private:
-	typedef std::uint8_t focus_ptr_t;
+	typedef std::uint_fast8_t focus_ptr_t;
 	static_assert(std::is_integral<T>::value, "T must be integral");
 
 public:
@@ -36,7 +36,6 @@ public:
 	explicit gray_code_iterator(int n) : end_(false), n_(n), a_(0), f_(new focus_ptr_t[n + 1])
 	{
 		assert(n <= sizeof(T) * 8 && "T not large enough to hold n tuples");
-		assert(n <= std::pow(2, sizeof(focus_ptr_t) * 8) - 1);
 
 		std::iota(f_, f_ + n + 1, 0);
 
@@ -56,7 +55,7 @@ private:
 
 	void increment()
 	{
-		std::uint8_t j = f_[0];
+		const focus_ptr_t j = f_[0];
 
 		if (j == n_)
 		{
@@ -68,9 +67,7 @@ private:
 		f_[j] = f_[j + 1];
 		f_[j + 1] = j + 1;
 
-		// Flip a[j]
-		const bool a_j = a_ & (1 << j);
-		a_ ^= (1 << a_j);
+		a_ ^= (1 << j);
 	}
 
 	bool equal(const gray_code_iterator& other) const
