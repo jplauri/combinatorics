@@ -14,6 +14,7 @@
 #include <vector>
 #include <numeric>
 #include <cassert>
+#include <cstdint>
 
 #include <boost/iterator/iterator_facade.hpp>
 
@@ -40,7 +41,7 @@ private:
 
 	void increment()
 	{
-		T j = size_ - 1;
+		std::int64_t j = size_ - 1;
 
 		for (const T end = n_ - size_; j >= 0 && comb_[j] >= end + j; --j) { }
 
