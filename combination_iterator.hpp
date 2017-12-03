@@ -54,7 +54,7 @@ private:
 
 		++comb_[j];
 
-		for (const T end = size_ - 1; j < end; ++j)
+		for (const std::int64_t end = size_ - 1; j < end; ++j)
 		{
 			comb_[j + 1] = comb_[j] + 1;
 		}
