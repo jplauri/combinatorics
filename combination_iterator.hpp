@@ -11,8 +11,6 @@
 #ifndef COMBINATION_ITERATOR_HPP
 #define COMBINATION_ITERATOR_HPP
 
-// This code was produced by Juho Lauri (euler314).
-
 #include <vector>
 #include <numeric>
 #include <cassert>
