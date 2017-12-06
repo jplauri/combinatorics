@@ -29,9 +29,9 @@ class combination_iterator
 	>
 {
 public:
-	combination_iterator() : end_(true), n_(0), k_(0), comb_() { }
+	combination_iterator() : end_(true), n_(0), size_(0), comb_() { }
 
-	explicit combination_iterator(T n, T k) : end_(false), n_(n), k_(k), comb_(k)
+	explicit combination_iterator(T n, T k) : end_(false), n_(n), size_(k), comb_(k)
 	{
 		assert(k != 0 && n_ > k);
 		std::iota(comb_.begin(), comb_.end(), 0);
@@ -43,20 +43,20 @@ private:
 
 	void increment()
 	{
-		std::int64_t j = k_ - 1;
+		std::int64_t j = size_ - 1;
 
-		for (const T end = n_ - k_; j >= 0 && comb_[j] >= end + j; --j) { }
+		for (const T end = n_ - size_; j >= 0 && comb_[j] >= end + j; --j) { }
 
 		if (j < 0)
 		{
-			assert(comb_.front() == n_ - k_);
+			assert(comb_.front() == n_ - size_);
 			end_ = true;
 			return;
 		}
 
 		++comb_[j];
 
-		for (const std::int64_t end = k_ - 1; j < end; ++j)
+		for (const std::int64_t end = size_ - 1; j < end; ++j)
 		{
 			comb_[j + 1] = comb_[j] + 1;
 		}
@@ -76,7 +76,7 @@ private:
 
 	bool end_;
 	const int n_;
-	const int k_;
+	const int size_;
 	std::vector<T> comb_;
 };
 
@@ -90,9 +90,9 @@ class combination_iterator_maximin_order
 	>
 {
 public:
-	combination_iterator_maximin_order() : end_(true), n_(0), k_(0), comb_() { }
+	combination_iterator_maximin_order() : end_(true), n_(0), size_(0), comb_() { }
 
-	explicit combination_iterator_maximin_order(T n, T k) : end_(false), n_(n), k_(k), comb_(k)
+	explicit combination_iterator_maximin_order(T n, T k) : end_(false), n_(n), size_(k), comb_(k)
 	{
 		assert(k != 0 && n_ > k);
 		std::iota(comb_.begin(), comb_.end(), 0);
@@ -134,7 +134,7 @@ private:
 
 	bool end_;
 	const int n_;
-	const int k_;
+	const int size_;
 	std::vector<T> comb_;
 };
 
