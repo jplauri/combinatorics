@@ -11,12 +11,12 @@
 #ifndef COMBINATION_ITERATOR_HPP
 #define COMBINATION_ITERATOR_HPP
 
-#include "common.hpp"
-#include <boost/iterator/iterator_facade.hpp>
-
 #include <vector>
 #include <numeric>
 #include <cassert>
+#include <cstdint>
+
+#include <boost/iterator/iterator_facade.hpp>
 
 template <typename T>
 class combination_iterator
@@ -27,12 +27,9 @@ class combination_iterator
 	>
 {
 public:
-	combination_iterator() : end_(true), n_(0), t_(0), comb_() 
-	{ 
-		assert(end_);
-	}
+	combination_iterator() : end_(true), n_(0), size_(0), comb_() { }
 
-	explicit combination_iterator(index_t n, index_t k) : end_(false), n_(n), t_(k), comb_(k)
+	explicit combination_iterator(T n, T k) : end_(false), n_(n), size_(k), comb_(k)
 	{
 		assert(k != 0 && n_ > k);
 		std::iota(comb_.begin(), comb_.end(), 0);
@@ -44,21 +41,20 @@ private:
 
 	void increment()
 	{
-		// Must be signed
-		std::int64_t j = t_ - 1;
+		std::int64_t j = size_ - 1;
 
-		for (const T end = n_ - t_; j >= 0 && comb_[j] >= end + j; --j) {}
+		for (const T end = n_ - size_; j >= 0 && comb_[j] >= end + j; --j) { }
 
 		if (j < 0)
 		{
-			assert(comb_.front() == n_ - t_);
+			assert(comb_.front() == n_ - size_);
 			end_ = true;
 			return;
 		}
 
 		++comb_[j];
 
-		for (const std::int64_t end = t_ - 1; j < end; ++j)
+		for (const std::int64_t end = size_ - 1; j < end; ++j)
 		{
 			comb_[j + 1] = comb_[j] + 1;
 		}
@@ -77,8 +73,8 @@ private:
 	}
 
 	bool end_;
-	const index_t n_;
-	const index_t t_;
+	const int n_;
+	const int size_;
 	std::vector<T> comb_;
 };
 
