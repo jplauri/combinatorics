@@ -78,4 +78,62 @@ private:
 	std::vector<T> comb_;
 };
 
+
+template <typename T>
+class combination_iterator_maximin_order
+	: public boost::iterator_facade<
+	combination_iterator_maximin_order<T>,
+	const std::vector<T>&,
+	boost::forward_traversal_tag
+	>
+{
+public:
+	combination_iterator_maximin_order() : end_(true), n_(0), size_(0), comb_() { }
+
+	explicit combination_iterator_maximin_order(T n, T k) : end_(false), n_(n), size_(k), comb_(k)
+	{
+		assert(k != 0 && n_ > k);
+		std::iota(comb_.begin(), comb_.end(), 0);
+		assert(!end_);
+	}
+
+private:
+	friend class boost::iterator_core_access;
+
+	void increment()
+	{
+		//The following code was copied from the discreture library: http://github.com/mraggi/discreture
+		if (comb_.empty())
+			return;
+		T last = comb_.size()-1;
+		for (T i = 0; i < last; ++i)
+		{
+			if (comb_[i]+1 != comb_[i+1])
+			{
+				++comb_[i];
+				return;
+			} 
+			comb_[i] = i;
+		}
+		if (comb_[last]+1 == n_)
+			end_ = true;
+		++comb_[last];
+	}
+
+	bool equal(const combination_iterator_maximin_order& other) const
+	{
+		return end_ == other.end_;
+	}
+
+	const std::vector<T>& dereference() const
+	{
+		return comb_;
+	}
+
+	bool end_;
+	const int n_;
+	const int size_;
+	std::vector<T> comb_;
+};
+
 #endif
